@@ -82,8 +82,8 @@ class ExcelFile extends React.Component {
         const fileName = this.getFileName();
         const wbout = XLSX.write(wb, {bookType: fileExtension, bookSST: true, type: 'binary'});
         
-        if (props.onFinish){
-            return props.onFinish(strToArrBuffer(wbout))
+        if (this.props.onFinish){
+            return this.props.onFinish(strToArrBuffer(wbout))
         } else {
             saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), fileName);
         }
