@@ -15,6 +15,7 @@ class ExcelFile extends React.Component {
         filename: PropTypes.string,
         fileExtension: PropTypes.string,
         element: PropTypes.any,
+        onFinish: PropTypes.func,
         children: function (props, propName, componentName) {
             React.Children.forEach(props[propName], child => {
                 if (child.type !== ExcelSheet) {
@@ -80,8 +81,12 @@ class ExcelFile extends React.Component {
         const fileExtension = this.getFileExtension();
         const fileName = this.getFileName();
         const wbout = XLSX.write(wb, {bookType: fileExtension, bookSST: true, type: 'binary'});
-
-        saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), fileName);
+        
+        if (props.onFinish){
+            return props.onFinish(strToArrBuffer(wbout))
+        } else {
+            saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), fileName);
+        }
     }
 
     getFileName() {
